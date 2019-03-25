@@ -10,7 +10,7 @@ $(function () {
 
     // получаем method
     this.getAttribute('method');
-
+    var res;
     $.ajax({
       type: this.getAttribute('method'),
       url: this.getAttribute('action'),
@@ -20,9 +20,20 @@ $(function () {
       processData: false,
       success: function (result) {
         console.log(result);
+        res = JSON.parse(result);
+        if (res.url) {
+          window.location.href = res.url;
+        } else  {
+          swal(
+            res.title,
+            res.text,
+            res.status,
+          );
+        }
+
       },
       error: function (result) {
-        console.log('Error',result);
+        swal("Сообщение отправлено!", result, "error");
       }
     });
   });
